@@ -9,7 +9,7 @@ class JobOffer(db.Model):
     hourly_rate = db.Column(db.Float, nullable=False)
     weekly_hours = db.Column(db.Integer, nullable=False)
     
-    related_employment = relationship("Employment", back_populates="assigned_offer")
+    related_employment = relationship("Employment", back_populates="assigned_offer", lazy='select')
 
     def __init__(self, job_title: str, hourly_rate: float, weekly_hours: int) -> None:
         super().__init__()

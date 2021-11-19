@@ -4,14 +4,15 @@ from app import db
 class Qualifications(db.Model):
     __tablename__ = "qualifications"
 
-    prisoners_id = db.Column(db.Integer, db.ForeignKey('prisoner.id'), primary_key=True, autoincrement=True)
+    prisoners_id = db.Column(db.Integer, db.ForeignKey('prisoner.id'), primary_key=True)
     skill = db.Column(db.String(128), nullable=False)
     level = db.Column(db.Integer, nullable=False)
 
-    assigned_prisoner = relationship("Prisoner", back_populates="qualifications")
+    assigned_prisoner = relationship("Prisoner", back_populates="qualifications", lazy='joined')
 
-    def __init__(self, skill: str, level: str) -> None:
+    def __init__(self, prisoners_id: int, skill: str, level: str) -> None:
         super().__init__()
+        self.prisoners_id = prisoners_id
         self.skill = skill
         self.level = level
     

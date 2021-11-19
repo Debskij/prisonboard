@@ -10,9 +10,9 @@ class Prisoner(db.Model):
     hired = db.Column(db.Boolean, nullable=False)
     birth_date = db.Column(db.DateTime, nullable=False)
     
-    assigned_person = relationship("Person", back_populates="assigned_prisoner")
-    qualifications = relationship("Qualifications", back_populates="assigned_prisoner")
-    performed_work = relationship("Employment", back_populates="assigned_prisoner")
+    assigned_person = relationship("Person", back_populates="assigned_prisoner", lazy='joined')
+    qualifications = relationship("Qualifications", back_populates="assigned_prisoner", lazy='joined')
+    performed_work = relationship("Employment", back_populates="assigned_prisoner", lazy='joined')
 
     def __init__(self, pesel: str, avarage_ranking: float, hired: bool, birth_date) -> None:
         super().__init__()
