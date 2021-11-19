@@ -16,5 +16,11 @@ class Person(db.Model):
         self.name = name
         self.surname = surname
     
+    def __init__(self, id: int, name: str, surname: str) -> None:
+        super().__init__()
+        self.id = id
+        self.name = name
+        self.surname = surname
+
     def __str__(self) -> str:
         return f"{self.__tablename__} id: {self.id} name: {self.name} surname: {self.surname}"

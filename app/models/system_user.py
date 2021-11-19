@@ -8,7 +8,7 @@ class SystemUser(db.Model):
     username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     
-    assigned_person = relationship("Person", back_populates="assigned_user")
+    assigned_person = relationship("Person", back_populates="assigned_user", lazy='joined')
 
     def __init__(self, id: int, username: str, password: str) -> None:
         super().__init__()
