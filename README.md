@@ -11,13 +11,6 @@ docker-compose exec web flask shell
 
 ### In shell
 
-from app import db
-
-db.drop_all()
-db.create_all()
-db.session.commit()
-
-### Creating object instance:
-
-db.session.add(User(email='abc@example.com'))
-db.session.commit()
+from app import db, init_db
+from app.models import *
+init_db()

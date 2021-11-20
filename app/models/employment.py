@@ -5,7 +5,7 @@ from app import db
 class Employment(db.Model):
     __tablename__ = "employment"
 
-    employment_id = db.Column(db.Integer, db.ForeignKey('joboffer.id'), primary_key=True)
+    employment_id = db.Column(db.Integer, db.ForeignKey('joboffer.job_id'), primary_key=True)
     employee_id = db.Column(db.Integer, db.ForeignKey('prisoner.id'), nullable=False)
     start_date = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
@@ -13,7 +13,7 @@ class Employment(db.Model):
     assigned_prisoner = relationship("Prisoner", back_populates="performed_work", lazy='joined')
     assigned_offer = relationship("JobOffer", back_populates="related_employment", lazy='joined')
 
-    def __init__(self, employment_id: int, employee_id: int, offer_id: int, start_date, end_date) -> None:
+    def __init__(self, employment_id: int, employee_id: int, start_date, end_date) -> None:
         super().__init__()
         self.employment_id = employment_id
         self.employee_id = employee_id

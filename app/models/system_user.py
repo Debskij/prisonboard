@@ -4,7 +4,7 @@ from app import db
 class SystemUser(db.Model):
     __tablename__ = "systemuser"
 
-    id = db.Column(db.Integer, db.ForeignKey('systemuser.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
     username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     
