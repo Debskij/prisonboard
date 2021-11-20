@@ -4,11 +4,11 @@ from app import db
 class SystemUser(db.Model):
     __tablename__ = "systemuser"
 
-    id = db.Column(db.Integer, db.ForeignKey('systemuser.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
     username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     
-    assigned_person = relationship("Person", back_populates="assigned_user")
+    assigned_person = relationship("Person", back_populates="assigned_user", lazy='joined')
 
     def __init__(self, id: int, username: str, password: str) -> None:
         super().__init__()

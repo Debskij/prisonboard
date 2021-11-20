@@ -17,5 +17,12 @@ class JobOffer(db.Model):
         self.hourly_rate = hourly_rate
         self.weekly_hours = weekly_hours
 
+    def __init__(self, job_id: int, job_title: str, hourly_rate: float, weekly_hours: int) -> None:
+        super().__init__()
+        self.job_id = job_id
+        self.job_title = job_title
+        self.hourly_rate = hourly_rate
+        self.weekly_hours = weekly_hours    
+
     def __str__(self) -> str:
         return f"{self.__tablename__} job id: {self.job_id} job title: {self.job_title} hourly rate: {self.hourly_rate} weekly hours: {self.weekly_hours}"
