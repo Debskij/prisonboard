@@ -1,0 +1,14 @@
+{% extends 'template.html' %}
+{% block content %}
+<h2>Prisoner: {{ prisoner.name }} {{ prisoner.surname }}</h2>
+<ul>
+    <li>ID: {{ prisoner.id }}</li>
+    <li>
+        {% for qualification in prisoner.qualifications %}
+        <ul>
+        <li>Qualification: {{ qualification.skill }}, level: {{ qualification.level }}</li>
+        </ul>
+        {% endfor %}
+    </li>
+</ul>
+{% endblock %}

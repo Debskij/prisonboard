@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/login.css') }}">
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <form onsubmit="notImplemented()">        
+        <div class="container">
+            <b>Username</b>
+            <input type="text" placeholder="Enter Username" name="uname" required>
+            
+            <b>Password</b>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+            
+            <button type="submit">Login</button>
+            <label>
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+        </div>
+        
+        <div class="container" style="background-color:#f1f1f1">
+            <button type="button" class="cancelbtn" onclick="location.href='/'">Go back</button>
+        </div>
+    </form>
+    <script>
+        function notImplemented(){
+            alert("Not implemented yet 😐")
+        }
+    </script>
+</body>
+</html>
