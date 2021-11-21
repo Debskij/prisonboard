@@ -1,20 +1,16 @@
 from sqlalchemy.orm import relationship
 from app import db
+from app.models import Person
 
-
-class SystemUser(db.Model):
+class SystemUser(Person):
     __tablename__ = "systemuser"
 
     id = db.Column(db.Integer, db.ForeignKey("person.id"), primary_key=True)
     username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-
-    assigned_person = relationship(
-        "Person", back_populates="assigned_user", lazy="joined"
-    )
-
-    def __init__(self, id: int, username: str, password: str) -> None:
-        super().__init__()
+    
+    def __init__(self, id: int, name: str, surname: str, username: str, password: str) -> None:
+        Person.__init__(self, id, name, surname)
         self.id = id
         self.username = username
         self.password = password
