@@ -2,7 +2,7 @@ from sqlalchemy.orm import relationship
 from app import db
 
 
-class Qualifications(db.Model):
+class Qualification(db.Model):
     __tablename__ = "qualifications"
 
     id = db.Column(db.Integer, primary_key=True)
