@@ -9,7 +9,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from .models import *
-from .routes import *
+from .controllers import *
+
 
 def init_db():
     db.drop_all()

@@ -1,20 +1,29 @@
 from sqlalchemy.orm import relationship
 from app import db
 
+
 class Prisoner(db.Model):
     __tablename__ = "prisoner"
 
-    id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey("person.id"), primary_key=True)
     pesel = db.Column(db.String(128), nullable=False, unique=True)
     avarage_ranking = db.Column(db.Float)
     hired = db.Column(db.Boolean, nullable=False)
     birth_date = db.Column(db.DateTime, nullable=False)
-    
-    assigned_person = relationship("Person", back_populates="assigned_prisoner", lazy='joined')
-    qualifications = relationship("Qualifications", back_populates="assigned_prisoner", lazy='joined')
-    performed_work = relationship("Employment", back_populates="assigned_prisoner", lazy='joined')
 
-    def __init__(self, id: int, pesel: str, avarage_ranking: float, hired: bool, birth_date) -> None:
+    assigned_person = relationship(
+        "Person", back_populates="assigned_prisoner", lazy="joined"
+    )
+    qualifications = relationship(
+        "Qualifications", back_populates="assigned_prisoner", lazy="joined"
+    )
+    performed_work = relationship(
+        "Employment", back_populates="assigned_prisoner", lazy="joined"
+    )
+
+    def __init__(
+        self, id: int, pesel: str, avarage_ranking: float, hired: bool, birth_date
+    ) -> None:
         super().__init__()
         self.id = id
         self.pesel = pesel

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import relationship
 from app import db
 
+
 class Person(db.Model):
     __tablename__ = "person"
 
@@ -8,14 +9,18 @@ class Person(db.Model):
     name = db.Column(db.String(128), nullable=False)
     surname = db.Column(db.String(128), nullable=False)
 
-    assigned_user = relationship("SystemUser", back_populates="assigned_person", lazy='joined')
-    assigned_prisoner = relationship("Prisoner", back_populates="assigned_person", lazy='joined')
+    assigned_user = relationship(
+        "SystemUser", back_populates="assigned_person", lazy="joined"
+    )
+    assigned_prisoner = relationship(
+        "Prisoner", back_populates="assigned_person", lazy="joined"
+    )
 
     def __init__(self, name: str, surname: str) -> None:
         super().__init__()
         self.name = name
         self.surname = surname
-    
+
     def __init__(self, id: int, name: str, surname: str) -> None:
         super().__init__()
         self.id = id
