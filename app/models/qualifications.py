@@ -5,7 +5,8 @@ from app import db
 class Qualifications(db.Model):
     __tablename__ = "qualifications"
 
-    prisoners_id = db.Column(db.Integer, db.ForeignKey("prisoner.id"), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    prisoners_id = db.Column(db.Integer, db.ForeignKey("prisoner.id"))
     skill = db.Column(db.String(128), nullable=False)
     level = db.Column(db.Integer, nullable=False)
 
