@@ -1,14 +1,22 @@
 {% extends 'template.html' %}
 {% block content %}
-<h2>Prisoner: {{ prisoner.name }} {{ prisoner.surname }}</h2>
+<h2>Prisoner: {{ prisoner.name }} {{ prisoner.surname }}, ID: {{ prisoner.id }}</h2>
+
+<form action="{{ prisoner.id }}" method="post">
+        
+        <b>Add new qualification</b>
+        <input type="text" placeholder="Enter skill name" name="skill" required>
+        <input type="number" placeholder="Enter level" name="level" required>
+        
+        <button type="submit">Find</button>
+    </div>
+</form>
+
+<br/>
+
 <ul>
-    <li>ID: {{ prisoner.id }}</li>
-    <li>
-        {% for qualification in prisoner.qualifications %}
-        <ul>
-        <li>Qualification: {{ qualification.skill }}, level: {{ qualification.level }}</li>
-        </ul>
-        {% endfor %}
-    </li>
+    {% for qualification in prisoner.qualifications %}
+    <li>{{ qualification.skill }}, level: {{ qualification.level }}</li>
+    {% endfor %}
 </ul>
 {% endblock %}

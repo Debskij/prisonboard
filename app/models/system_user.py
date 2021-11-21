@@ -2,14 +2,17 @@ from sqlalchemy.orm import relationship
 from app import db
 from app.models import Person
 
+
 class SystemUser(Person):
     __tablename__ = "systemuser"
 
     id = db.Column(db.Integer, db.ForeignKey("person.id"), primary_key=True)
     username = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    
-    def __init__(self, id: int, name: str, surname: str, username: str, password: str) -> None:
+
+    def __init__(
+        self, id: int, name: str, surname: str, username: str, password: str
+    ) -> None:
         Person.__init__(self, id, name, surname)
         self.id = id
         self.username = username
