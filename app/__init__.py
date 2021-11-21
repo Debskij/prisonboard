@@ -15,10 +15,8 @@ from .controllers import *
 def init_db():
     db.drop_all()
     db.create_all()
-    db.session.add(Person(100, "Jan", "Kowalski"))
-    db.session.add(Person(200, "Adam", "Nowak"))
-    db.session.add(Prisoner(100, "90101001123", 3.2, True, datetime(1990, 1, 1)))
-    db.session.add(SystemUser(200, "adamos", "123456"))
+    db.session.add(Prisoner(100, "Jan", "Kowalski", "90101001123", 3.2, True, datetime(1990, 1, 1)))
+    db.session.add(SystemUser(200, "Adam", "Nowak", "adamos", "123456"))
     db.session.add(Qualifications(100, "Plumbering", 3))
     db.session.add(Qualifications(100, "CNC machinery", 4))
     db.session.add(JobOffer(300, "Plumber", 15.5, 30))
