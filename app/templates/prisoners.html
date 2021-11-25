@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+{% block content %}
+<h2>Prisoners list</h2>
+
+<form action="/prisoners" method="post">
+    <input type="text" placeholder="Name..." name="name">
+    <input type="text" placeholder="Surname..." name="surname">
+    <input type="text" placeholder="Position..." name="position">
+    <button type="submit">Submit</button>
+</form>
+
+<form action="/prisoners" method="post">
+    <button type="submit">Show all</button>
+</form>
+
+<ul>
+    {% for prisoner in prisoners %}
+    <li>{{ prisoner.name }} {{ prisoner.surname }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
