@@ -14,9 +14,7 @@ class JobOffer(db.Model):
     related_employment = relationship(
         "Employment", back_populates="assigned_offer", lazy="select"
     )
-    company = relationship(
-        "Company", back_populates="job_offers", lazy="joined"
-    )
+    company = relationship("Company", back_populates="job_offers", lazy="joined")
 
     def __init__(self, job_title: str, hourly_rate: float, weekly_hours: int) -> None:
         super().__init__()
@@ -25,7 +23,12 @@ class JobOffer(db.Model):
         self.weekly_hours = weekly_hours
 
     def __init__(
-        self, job_id: int, company_id: int, job_title: str, hourly_rate: float, weekly_hours: int
+        self,
+        job_id: int,
+        company_id: int,
+        job_title: str,
+        hourly_rate: float,
+        weekly_hours: int,
     ) -> None:
         super().__init__()
         self.job_id = job_id
@@ -35,4 +38,4 @@ class JobOffer(db.Model):
         self.weekly_hours = weekly_hours
 
     def __str__(self) -> str:
-        return f"{self.__tablename__} job id: {self.job_id} job title: {self.job_title} hourly rate: {self.hourly_rate} weekly hours: {self.weekly_hours}"
+        return f"Job id: {self.job_id}, Title: {self.job_title}, Hourly rate: {self.hourly_rate}, Weekly hours: {self.weekly_hours}"

@@ -1,0 +1,8 @@
+{% extends 'template.html' %}
+{% block content %}
+<h2>Job id: {{ job.job_id }}, title: {{ job.job_title }}</h2>
+
+Company: {{ job.company_id }}
+Salary: {{ job.hourly_rate }}
+Weekly hours: {{ job.weekly_hours }}
+{% endblock %}

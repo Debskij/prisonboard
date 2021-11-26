@@ -1,0 +1,34 @@
+{% extends 'template.html' %}
+{% block content %}
+<h2>Job offers</h2>
+
+<form action="/jobs" method="post">
+    <input type="text" placeholder="Job offer title..." name="title">
+    <input type="text" placeholder="Company..." name="company">
+    <button type="submit">Submit</button>
+</form>
+
+<form action="/jobs" method="post">
+    <button type="submit">Show all</button>
+</form>
+
+<p>Weekly hours</p>
+<form action="/jobs/hours" method="post">
+    <input type="number" placeholder="From" name="from">
+    <input type="number" placeholder="To" name="to">
+    <button type="submit">Submit</button>
+</form>
+
+<p>Salary</p>
+<form action="/jobs/salary" method="post">
+    <input type="number" placeholder="From" name="from" step="0.1">
+    <input type="number" placeholder="To" name="to" step="0.1">
+    <button type="submit">Submit</button>
+</form>
+
+<ul>
+    {% for job_offer in jobs %}
+    <li><a href="{{ url_for('get_job_by_id', job_id=job_offer.job_id) }}">{{ job_offer }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
