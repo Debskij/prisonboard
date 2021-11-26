@@ -14,14 +14,20 @@ logger = logging.getLogger(__name__)
 class PrisonerQueryResult:
     prisoner: Prisoner
     company: Company
-    
+
+
 def get_prisoners_with_companies(prisoners_query_results):
     prisoners = []
     for prisoner in prisoners_query_results:
         companies_query = db.session.query(Company)
-        company = companies_query.join(Company, JobOffer, Employment).join(JobOffer.related_employment).filter(Employment.employee_id == prisoner.id)
+        company = (
+            companies_query.join(Company, JobOffer, Employment)
+            .join(JobOffer.related_employment)
+            .filter(Employment.employee_id == prisoner.id)
+        )
         prisoners.append(PrisonerQueryResult(prisoner, company))
     return prisoners
+
 
 @app.route("/prisoners", methods=["GET"], strict_slashes=False)
 def get_all_prisoners():
@@ -51,7 +57,9 @@ def get_prisoners_by_name(value):
 @app.route("/prisoners/surname/<value>", methods=["GET"])
 def get_prisoners_by_surname(value):
     query = db.session.query(Prisoner)
-    prisoners_query_results = query.filter(func.lower(Prisoner.surname) == value.lower())
+    prisoners_query_results = query.filter(
+        func.lower(Prisoner.surname) == value.lower()
+    )
     prisoners = get_prisoners_with_companies(prisoners_query_results)
     return render_template("prisoners.html", prisoners=prisoners)
 

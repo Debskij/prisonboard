@@ -13,3 +13,14 @@ from .prisoners import (
     get_prisoners_by_company,
     get_prisoners_by_field_redirect,
 )
+from .job_offers import (
+    get_all_jobs,
+    get_job_by_id,
+    get_jobs_by_field_redirect,
+    get_jobs_by_company,
+    get_jobs_by_title,
+    get_jobs_by_hours_redirect,
+    get_jobs_by_hours,
+    get_jobs_by_salary_redirect,
+    get_jobs_by_salary,
+)
