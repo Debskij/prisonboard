@@ -14,15 +14,15 @@
 
 <p>Weekly hours</p>
 <form action="/jobs/hours" method="post">
-    <input type="number" placeholder="From" name="from">
-    <input type="number" placeholder="To" name="to">
+    <input type="number" placeholder="From" name="from" required>
+    <input type="number" placeholder="To" name="to" required>
     <button type="submit">Submit</button>
 </form>
 
 <p>Salary</p>
 <form action="/jobs/salary" method="post">
-    <input type="number" placeholder="From" name="from" step="0.1">
-    <input type="number" placeholder="To" name="to" step="0.1">
+    <input type="number" placeholder="From" name="from" step="0.1" required>
+    <input type="number" placeholder="To" name="to" step="0.1" required>
     <button type="submit">Submit</button>
 </form>
 
