@@ -1,7 +1,7 @@
 import logging
 
 from app import app, db
-from app.models import Prisoner, Employment, JobOffer
+from app.models import Prisoner, Employment, JobOffer, Company
 from sqlalchemy import func
 from flask import render_template, redirect, url_for, abort, request
 
@@ -17,7 +17,7 @@ def get_all_prisoners():
 
 @app.route("/prisoners", methods=["POST"])
 def get_prisoners_by_field_redirect():
-    fields = ["name", "surname", "position"]
+    fields = ["name", "surname", "company"]
     for field in fields:
         value = request.form.get(field)
         if value:
@@ -39,10 +39,10 @@ def get_prisoners_by_surname(value):
     return render_template("prisoners.html", prisoners=prisoners)
 
 
-@app.route("/prisoners/position/<value>", methods=["GET"])
-def get_prisoners_by_position(value):
-    query = db.session.query(Prisoner).join(Employment).join(JobOffer)
+@app.route("/prisoners/company/<value>", methods=["GET"])
+def get_prisoners_by_company(value):
+    query = db.session.query(Prisoner).join(Employment).join(JobOffer).join(Company)
     prisoners = query.filter(
-        func.lower(JobOffer.job_title).contains(value.lower())
+        func.lower(Company.full_name).contains(value.lower())
     ).all()
     return render_template("prisoners.html", prisoners=prisoners)
