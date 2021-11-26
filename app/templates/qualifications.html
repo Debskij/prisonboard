@@ -1,15 +1,20 @@
 {% extends 'template.html' %}
 {% block content %}
+<form action="{{ url_for('post_qualifications') }}" method="post">
+    <b>Find qualification for prisoner's id: </b>
+    <input type="number" placeholder="Enter ID" name="prisoner_id" required>
+    <button type="submit">Find</button>
+</form>
+
+{% if prisoner is not none %}  
 <h2>Prisoner: {{ prisoner.name }} {{ prisoner.surname }}, ID: {{ prisoner.id }}</h2>
 
 <form action="{{ prisoner.id }}" method="post">
-        
-        <b>Add new qualification</b>
-        <input type="text" placeholder="Enter skill name" name="skill" required>
-        <input type="number" placeholder="Enter level" name="level" required>
-        
-        <button type="submit">Find</button>
-    </div>
+    <b>Add new qualification</b>
+    <input type="text" placeholder="Enter skill name" name="skill" required>
+    <input type="number" placeholder="Enter level" name="level" required>
+    
+    <button type="submit">Add</button>
 </form>
 
 <br/>
@@ -19,4 +24,5 @@
     <li>{{ qualification.skill }}, level: {{ qualification.level }}</li>
     {% endfor %}
 </ul>
+{% endif %}
 {% endblock %}
