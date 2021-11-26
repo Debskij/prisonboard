@@ -15,7 +15,7 @@
 
 <ul>
     {% for prisoner in prisoners %}
-    <li>{{ prisoner.name }} {{ prisoner.surname }}</li>
+    <li>{{ prisoner.prisoner.name }} {{ prisoner.prisoner.surname }} {{ prisoner.company.full_name }}</li>
     {% endfor %}
 </ul>
 {% endblock %}
