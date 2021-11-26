@@ -4,6 +4,7 @@ from app import app, db
 from app.models import JobOffer, Company
 from sqlalchemy import func
 from flask import render_template, redirect, url_for, abort, request
+from flask_login import login_required
 
 
 logging.basicConfig()
@@ -11,12 +12,14 @@ logger = logging.getLogger(__name__)
 
 
 @app.route("/jobs", methods=["GET"], strict_slashes=False)
+@login_required
 def get_all_jobs():
     jobs = JobOffer.query.all()
     return render_template("job_offers.html", jobs=jobs)
 
 
 @app.route("/jobs/<job_id>", methods=["GET"], strict_slashes=False)
+@login_required
 def get_job_by_id(job_id):
     query = JobOffer.query
     job_id = int(job_id)
@@ -25,6 +28,7 @@ def get_job_by_id(job_id):
 
 
 @app.route("/jobs", methods=["POST"])
+@login_required
 def get_jobs_by_field_redirect():
     fields = ["title", "company"]
     for field in fields:
@@ -35,6 +39,7 @@ def get_jobs_by_field_redirect():
 
 
 @app.route("/jobs/title/<value>", methods=["GET"])
+@login_required
 def get_jobs_by_title(value):
     query = db.session.query(JobOffer)
     jobs = query.filter(func.lower(JobOffer.job_title).contains(value.lower()))
@@ -42,6 +47,7 @@ def get_jobs_by_title(value):
 
 
 @app.route("/jobs/company/<value>", methods=["GET"])
+@login_required
 def get_jobs_by_company(value):
     query = db.session.query(JobOffer).join(Company)
     jobs = query.filter(func.lower(Company.full_name).contains(value.lower())).all()
@@ -49,6 +55,7 @@ def get_jobs_by_company(value):
 
 
 @app.route("/jobs/hours", methods=["POST"])
+@login_required
 def get_jobs_by_hours_redirect():
     hours_from = request.form.get("from")
     hours_to = request.form.get("to")
@@ -58,6 +65,7 @@ def get_jobs_by_hours_redirect():
 
 
 @app.route("/jobs/hours/<hours_from>/<hours_to>", methods=["GET"])
+@login_required
 def get_jobs_by_hours(hours_from, hours_to):
     query = db.session.query(JobOffer)
     jobs = query.filter(JobOffer.weekly_hours.between(hours_from, hours_to))
@@ -65,6 +73,7 @@ def get_jobs_by_hours(hours_from, hours_to):
 
 
 @app.route("/jobs/salary", methods=["POST"])
+@login_required
 def get_jobs_by_salary_redirect():
     salary_from = request.form.get("from")
     salary_to = request.form.get("to")
@@ -74,6 +83,7 @@ def get_jobs_by_salary_redirect():
 
 
 @app.route("/jobs/salary/<salary_from>/<salary_to>", methods=["GET"])
+@login_required
 def get_jobs_by_salary(salary_from, salary_to):
     query = db.session.query(JobOffer)
     jobs = query.filter(JobOffer.hourly_rate.between(salary_from, salary_to))

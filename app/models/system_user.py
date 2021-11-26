@@ -1,9 +1,10 @@
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 from app import db
 from app.models import Person
 
 
-class SystemUser(Person):
+class SystemUser(Person, UserMixin):
     __tablename__ = "systemuser"
 
     id = db.Column(db.Integer, db.ForeignKey("person.id"), primary_key=True)

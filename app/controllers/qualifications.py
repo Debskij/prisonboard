@@ -1,20 +1,24 @@
 from app import app, db
 from app.models import Prisoner, Qualification
 from flask import render_template, redirect, url_for, abort, request
+from flask_login import login_required
 
 
 @app.route("/qualifications", methods=["GET"])
+@login_required
 def get_qualifications_no_selections():
     return redirect(url_for("index"))
 
 
 @app.route("/qualifications", methods=["POST"])
+@login_required
 def post_qualifications():
     prisoner_id = request.form["prisoner_id"]
     return redirect(url_for("get_qualifications", prisoner_id=prisoner_id))
 
 
 @app.route("/qualifications/<prisoner_id>", methods=["GET"])
+@login_required
 def get_qualifications(prisoner_id):
     query = db.session.query(Prisoner)
     prisoner_id = int(prisoner_id)
@@ -26,6 +30,7 @@ def get_qualifications(prisoner_id):
 
 
 @app.route("/qualifications/<prisoner_id>", methods=["POST"])
+@login_required
 def update_qualifications(prisoner_id):
     prisoner_id = int(prisoner_id)
     new_qualification = Qualification(
