@@ -2,14 +2,25 @@ from datetime import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.config.from_object("app.config.Config")
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+login_manager = LoginManager()
+login_manager.login_view = 'login_get'
+login_manager.init_app(app)
+
 from .models import *
 from .controllers import *
+
+@login_manager.user_loader
+def load_user(user_id):
+    # since the user_id is just the primary key of our user table, use it in the query for the user
+    return SystemUser.query.get(int(user_id))
 
 
 def init_db():
@@ -42,7 +53,7 @@ def init_db():
         Prisoner(105, "Maria", "Daciuk", "81235601223", 4.2, True, datetime(1996, 2, 1))
     )
 
-    db.session.add(SystemUser(200, "Adam", "Nowak", "adamos", "123456"))
+    db.session.add(SystemUser(200, "Adam", "Nowak", "adamos", generate_password_hash("123456")))
 
     db.session.add(Qualification(100, "Plumbering", 3))
     db.session.add(Qualification(100, "CNC machinery", 4))

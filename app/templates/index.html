@@ -1,20 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Prisoners</title>
-</head>
-<body>
-    <h1>Welcome to PrisonBoard</h1>
-    <a href="login">Login</a>
-    <h2>Find qualifications of a user</h2>
-    <form action="qualifications" method="post">
-            
-            <b>ID</b>
-            <input type="number" placeholder="Enter ID" name="prisoner_id" required>
-            
-            <button type="submit">Find</button>
-        </div>
-    </form>
-</body>
-</html>
+{% extends 'template.html' %}
+{% block content %}
+
+<h1>Welcome to PrisonBoard</h1>
+{% if not current_user.is_authenticated %}
+<a href="login">Login</a>
+{% endif %}
+{% if current_user.is_authenticated %}
+<a href="{{ url_for('logout') }}">Logout</a>
+<h2>Find qualifications of a user</h2>
+<form action="qualifications" method="post">
+        
+        <b>ID</b>
+        <input type="number" placeholder="Enter ID" name="prisoner_id" required>
+        
+        <button type="submit">Find</button>
+    </div>
+</form>
+
+<p><a href="{{ url_for('get_all_prisoners') }}">List prisoners</a></p>
+<p><a href="{{ url_for('get_all_jobs') }}">List job offers</a></p>
+{% endif %}
+
+{% endblock %}

@@ -4,6 +4,7 @@ from app import app, db
 from app.models import Prisoner, Employment, JobOffer, Company
 from sqlalchemy import func
 from flask import render_template, redirect, url_for, abort, request
+from flask_login import login_required
 from dataclasses import dataclass
 
 logging.basicConfig()
@@ -30,6 +31,7 @@ def get_prisoners_with_companies(prisoners_query_results):
 
 
 @app.route("/prisoners", methods=["GET"], strict_slashes=False)
+@login_required
 def get_all_prisoners():
     prisoners_query_results = Prisoner.query.all()
     prisoners = get_prisoners_with_companies(prisoners_query_results)
@@ -37,6 +39,7 @@ def get_all_prisoners():
 
 
 @app.route("/prisoners", methods=["POST"])
+@login_required
 def get_prisoners_by_field_redirect():
     fields = ["name", "surname", "company"]
     for field in fields:
@@ -47,6 +50,7 @@ def get_prisoners_by_field_redirect():
 
 
 @app.route("/prisoners/name/<value>", methods=["GET"])
+@login_required
 def get_prisoners_by_name(value):
     query = db.session.query(Prisoner)
     prisoners_query_results = query.filter(func.lower(Prisoner.name) == value.lower())
@@ -55,6 +59,7 @@ def get_prisoners_by_name(value):
 
 
 @app.route("/prisoners/surname/<value>", methods=["GET"])
+@login_required
 def get_prisoners_by_surname(value):
     query = db.session.query(Prisoner)
     prisoners_query_results = query.filter(
@@ -65,6 +70,7 @@ def get_prisoners_by_surname(value):
 
 
 @app.route("/prisoners/company/<value>", methods=["GET"])
+@login_required
 def get_prisoners_by_company(value):
     query = db.session.query(Prisoner).join(Employment).join(JobOffer).join(Company)
     prisoners_query_results = query.filter(
