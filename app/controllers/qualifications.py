@@ -7,7 +7,7 @@ from flask_login import login_required
 @app.route("/qualifications", methods=["GET"])
 @login_required
 def get_qualifications_no_selections():
-    return redirect(url_for("index"))
+    return render_template("qualifications.html", prisoner=None)
 
 
 @app.route("/qualifications", methods=["POST"])
