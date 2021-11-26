@@ -4,3 +4,4 @@ from .person import Person
 from .prisoner import Prisoner
 from .qualification import Qualification
 from .system_user import SystemUser
+from .company import Company
