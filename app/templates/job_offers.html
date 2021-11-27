@@ -29,13 +29,13 @@
 <ul>
     {% for job_offer in jobs %}
     <li>
-        <a href="{{ url_for('get_job_by_id', job_id=job_offer.job_id) }}">{{ job_offer }}</a>
-        <form action="{{ url_for('delete_job_by_id', job_id=job_offer.job_id) }}" method='post'>
-            <input type="hidden" name='job_id' value={{ job_offer.job_id }}>
+        <a href="{{ url_for('get_job_by_id', job_id=job_offer.job.job_id) }}">{{ job_offer.job }}, Company: {{ job_offer.company.full_name }}</a>
+        <form action="{{ url_for('delete_job_by_id', job_id=job_offer.job.job_id) }}" method='post'>
+            <input type="hidden" name='job_id' value={{ job_offer.job.job_id }}>
             <button type='submit' name='delete' value='Delete'>Delete</button>
         </form>
-        <form action="{{ url_for('get_job_by_id', job_id=job_offer.job_id) }}" method='post'>
-            <input type="hidden" name='job_id' value={{ job_offer.job_id }}>
+        <form action="{{ url_for('get_job_by_id', job_id=job_offer.job.job_id) }}" method='post'>
+            <input type="hidden" name='job_id' value={{ job_offer.job.job_id }}>
             <button type='submit' name='edit' value='edit'>Edit</button>
         </form>
     </li>

@@ -6,6 +6,7 @@
 Company: {{ job.company_id }}
 Salary: {{ job.hourly_rate }}
 Weekly hours: {{ job.weekly_hours }}
+Company: {{ company.full_name }}
 
 <form action="{{ url_for('edit_job_by_id', job_id=job.job_id) }}" method="post">
     Title: <input type="text" value="{{ job.job_title }}" name="job_title" required>
