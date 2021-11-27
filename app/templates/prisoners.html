@@ -15,7 +15,11 @@
 
 <ul>
     {% for prisoner in prisoners %}
-    <li>{{ prisoner.prisoner.name }} {{ prisoner.prisoner.surname }} {{ prisoner.company.full_name }}</li>
+    {% if prisoner.company is not none %} 
+    <li>{{ prisoner.prisoner.name }} {{ prisoner.prisoner.surname }}, employed in: {{ prisoner.company.full_name }}</li>
+    {% else %}
+    <li>{{ prisoner.prisoner.name }} {{ prisoner.prisoner.surname }}, unemployed</li>
+    {% endif %}
     {% endfor %}
 </ul>
 {% endblock %}

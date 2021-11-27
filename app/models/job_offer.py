@@ -14,13 +14,7 @@ class JobOffer(db.Model):
     related_employment = relationship(
         "Employment", back_populates="assigned_offer", lazy="select"
     )
-    company = relationship("Company", back_populates="job_offers", lazy="joined")
-
-    def __init__(self, job_title: str, hourly_rate: float, weekly_hours: int) -> None:
-        super().__init__()
-        self.job_title = job_title
-        self.hourly_rate = hourly_rate
-        self.weekly_hours = weekly_hours
+    company = relationship("Company", back_populates="job_offers", lazy="select")
 
     def __init__(
         self,
