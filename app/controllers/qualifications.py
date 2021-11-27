@@ -41,3 +41,17 @@ def update_qualifications(prisoner_id):
     db.session.add(new_qualification)
     db.session.commit()
     return redirect(url_for("get_qualifications", prisoner_id=prisoner_id))
+
+
+@app.route("/qualifications/delete/<prisoner_id>/<qualification_id>", methods=["POST"])
+@login_required
+def delete_qualifications_by_id(prisoner_id, qualification_id):
+    qualification_id = int(qualification_id)
+    qualification = (
+        db.session.query(Qualification)
+        .filter(Qualification.id == qualification_id)
+        .first()
+    )
+    db.session.delete(qualification)
+    db.session.commit()
+    return redirect(url_for("get_qualifications", prisoner_id=prisoner_id))
