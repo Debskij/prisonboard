@@ -21,7 +21,13 @@
 
 <ul>
     {% for qualification in prisoner.qualifications %}
-    <li>{{ qualification.skill }}, level: {{ qualification.level }}</li>
+    <li>
+        {{ qualification.skill }}, level: {{ qualification.level }}
+        <form action="{{ url_for('delete_qualifications_by_id', prisoner_id=prisoner.id, qualification_id=qualification.id) }}" method='post'>
+            <input type="hidden" name='qualification_id' value={{ qualification.id }}>
+            <button type='submit' name='delete' value='Delete'>Delete</button>
+        </form>
+    </li>
     {% endfor %}
 </ul>
 {% endif %}
