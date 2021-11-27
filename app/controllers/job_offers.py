@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 @app.route("/jobs", methods=["GET"], strict_slashes=False)
 @login_required
 def get_all_jobs():
-    jobs = JobOffer.query.all()
+    jobs = JobOffer.query.order_by(JobOffer.job_id).all()
     return render_template("job_offers.html", jobs=jobs)
 
 
-@app.route("/jobs/<job_id>", methods=["GET"], strict_slashes=False)
+@app.route("/jobs/<job_id>", methods=["GET", "POST"], strict_slashes=False)
 @login_required
 def get_job_by_id(job_id):
     query = JobOffer.query
@@ -98,3 +98,21 @@ def get_jobs_by_salary(salary_from, salary_to):
     query = db.session.query(JobOffer)
     jobs = query.filter(JobOffer.hourly_rate.between(salary_from, salary_to))
     return render_template("job_offers.html", jobs=jobs)
+
+
+@app.route("/jobs/edit/<job_id>", methods=["POST"])
+@login_required
+def edit_job_by_id(job_id):
+    job_id = int(job_id)
+    job_offer = db.session.query(JobOffer).filter(JobOffer.job_id == job_id)
+    job_title = request.form.get("job_title")
+    salary = request.form.get("salary")
+    weekly_hours = request.form.get("weekly_hours")
+    update_dict = {
+        "job_title": job_title,
+        "hourly_rate": salary,
+        "weekly_hours": weekly_hours,
+    }
+    job_offer.update(update_dict)
+    db.session.commit()
+    return redirect(url_for("get_job_by_id", job_id=job_id))

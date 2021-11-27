@@ -6,4 +6,11 @@
 Company: {{ job.company_id }}
 Salary: {{ job.hourly_rate }}
 Weekly hours: {{ job.weekly_hours }}
+
+<form action="{{ url_for('edit_job_by_id', job_id=job.job_id) }}" method="post">
+    Title: <input type="text" value="{{ job.job_title }}" name="job_title" required>
+    Salary: <input type="number" value="{{ job.hourly_rate }}" name="salary" step="0.1" required>
+    Weekly hours: <input type="number" value="{{ job.weekly_hours }}" name="weekly_hours" step="0.1" required>
+    <button type="submit">Submit</button>
+</form>
 {% endblock %}
