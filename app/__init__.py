@@ -57,6 +57,9 @@ def init_db():
     db.session.add(
         SystemUser(200, "Adam", "Nowak", "adamos", generate_password_hash("123456"))
     )
+    db.session.add(
+        SystemUser(201, "Admin", "Admin", "admin", generate_password_hash("admin"))
+    )
 
     db.session.add(Qualification(100, "Plumbering", 3))
     db.session.add(Qualification(100, "CNC machinery", 4))
