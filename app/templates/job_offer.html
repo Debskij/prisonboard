@@ -1,5 +1,6 @@
 {% extends 'template.html' %}
 {% block content %}
+<a href="{{ url_for('get_all_jobs') }}">All job offers</a>
 <h2>Job id: {{ job.job_id }}, title: {{ job.job_title }}</h2>
 
 Company: {{ job.company_id }}
