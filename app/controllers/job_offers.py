@@ -27,6 +27,16 @@ def get_job_by_id(job_id):
     return render_template("job_offer.html", job=job)
 
 
+@app.route("/jobs/delete/<job_id>", methods=["POST"])
+@login_required
+def delete_job_by_id(job_id):
+    job_id = int(job_id)
+    job_offer = db.session.query(JobOffer).filter(JobOffer.job_id == job_id).first()
+    db.session.delete(job_offer)
+    db.session.commit()
+    return redirect(url_for("get_all_jobs"))
+
+
 @app.route("/jobs", methods=["POST"])
 @login_required
 def get_jobs_by_field_redirect():
@@ -35,7 +45,7 @@ def get_jobs_by_field_redirect():
         value = request.form.get(field)
         if value:
             return redirect(url_for(f"get_jobs_by_{field}", value=value))
-    return redirect(url_for(f"get_all_jobs"))
+    return redirect(url_for("get_all_jobs"))
 
 
 @app.route("/jobs/title/<value>", methods=["GET"])
