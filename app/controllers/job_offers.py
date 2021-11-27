@@ -1,20 +1,31 @@
-import logging
-
 from app import app, db
 from app.models import JobOffer, Company
 from sqlalchemy import func
 from flask import render_template, redirect, url_for, abort, request
 from flask_login import login_required
+from dataclasses import dataclass
 
 
-logging.basicConfig()
-logger = logging.getLogger(__name__)
+@dataclass
+class JobQueryResult:
+    job: JobOffer
+    company: Company
+
+
+def get_jobs_with_companies(jobs_query_result):
+    jobs = []
+    for job in jobs_query_result:
+        companies_query = db.session.query(Company)
+        company = companies_query.get(job.company_id)
+        jobs.append(JobQueryResult(job, company))
+    return jobs
 
 
 @app.route("/jobs", methods=["GET"], strict_slashes=False)
 @login_required
 def get_all_jobs():
     jobs = JobOffer.query.order_by(JobOffer.job_id).all()
+    jobs = get_jobs_with_companies(jobs)
     return render_template("job_offers.html", jobs=jobs)
 
 
@@ -24,7 +35,9 @@ def get_job_by_id(job_id):
     query = JobOffer.query
     job_id = int(job_id)
     job = query.get(job_id)
-    return render_template("job_offer.html", job=job)
+    companies_query = db.session.query(Company)
+    company = companies_query.get(job.company_id)
+    return render_template("job_offer.html", job=job, company=company)
 
 
 @app.route("/jobs/delete/<job_id>", methods=["POST"])
@@ -53,6 +66,7 @@ def get_jobs_by_field_redirect():
 def get_jobs_by_title(value):
     query = db.session.query(JobOffer)
     jobs = query.filter(func.lower(JobOffer.job_title).contains(value.lower()))
+    jobs = get_jobs_with_companies(jobs)
     return render_template("job_offers.html", jobs=jobs)
 
 
@@ -61,6 +75,7 @@ def get_jobs_by_title(value):
 def get_jobs_by_company(value):
     query = db.session.query(JobOffer).join(Company)
     jobs = query.filter(func.lower(Company.full_name).contains(value.lower())).all()
+    jobs = get_jobs_with_companies(jobs)
     return render_template("job_offers.html", jobs=jobs)
 
 
@@ -79,6 +94,7 @@ def get_jobs_by_hours_redirect():
 def get_jobs_by_hours(hours_from, hours_to):
     query = db.session.query(JobOffer)
     jobs = query.filter(JobOffer.weekly_hours.between(hours_from, hours_to))
+    jobs = get_jobs_with_companies(jobs)
     return render_template("job_offers.html", jobs=jobs)
 
 
@@ -97,6 +113,7 @@ def get_jobs_by_salary_redirect():
 def get_jobs_by_salary(salary_from, salary_to):
     query = db.session.query(JobOffer)
     jobs = query.filter(JobOffer.hourly_rate.between(salary_from, salary_to))
+    jobs = get_jobs_with_companies(jobs)
     return render_template("job_offers.html", jobs=jobs)
 
 
