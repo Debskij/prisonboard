@@ -20,7 +20,12 @@ class Employment(db.Model):
     )
 
     def __init__(
-        self, employment_id: int, job_offer_id: int, employee_id: int, start_date, end_date
+        self,
+        employment_id: int,
+        job_offer_id: int,
+        employee_id: int,
+        start_date,
+        end_date,
     ) -> None:
         super().__init__()
         self.employment_id = employment_id

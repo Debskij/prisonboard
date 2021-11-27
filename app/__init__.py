@@ -77,8 +77,14 @@ def init_db():
     db.session.add(JobOffer(304, 202, "Chef", 18.5, 15))
     db.session.add(JobOffer(305, 203, "Programmer", 40, 20))
 
-    db.session.add(Employment(400, 300, 100, datetime(2021, 1, 1), datetime(2021, 12, 1)))
-    db.session.add(Employment(401, 301, 101, datetime(2021, 3, 6), datetime(2021, 11, 7)))
-    db.session.add(Employment(402, 302, 102, datetime(2021, 5, 10), datetime(2021, 9, 11)))
+    db.session.add(
+        Employment(400, 300, 100, datetime(2021, 1, 1), datetime(2021, 12, 1))
+    )
+    db.session.add(
+        Employment(401, 301, 101, datetime(2021, 3, 6), datetime(2021, 11, 7))
+    )
+    db.session.add(
+        Employment(402, 302, 102, datetime(2021, 5, 10), datetime(2021, 9, 11))
+    )
 
     db.session.commit()
