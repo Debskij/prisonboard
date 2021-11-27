@@ -20,12 +20,8 @@ class PrisonerQueryResult:
 def get_prisoners_with_companies(prisoners_query_results):
     prisoners = []
     for prisoner in prisoners_query_results:
-        companies_query = db.session.query(Company)
-        company = (
-            companies_query.join(Company, JobOffer, Employment)
-            .join(JobOffer.related_employment)
-            .filter(Employment.employee_id == prisoner.id)
-        )
+        companies_query = db.session.query(Company).join(JobOffer).join(Employment)
+        company = companies_query.filter(Employment.employee_id == prisoner.id).first()
         prisoners.append(PrisonerQueryResult(prisoner, company))
     return prisoners
 
