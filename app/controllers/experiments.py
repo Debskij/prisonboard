@@ -1,13 +1,15 @@
 from app import app, db
 from app.models import JobOffer, Prisoner, Qualification, Employment
 from sqlalchemy import func, event
-from datetime import date, timedelta
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from flask import render_template, url_for, request, abort, redirect
 from flask_login import login_required
+from sqlalchemy.sql.expression import cast
 
 def what_date_was(years_ago: int):
     today = date.today()
-    return today - timedelta(years=years_ago)
+    return today - relativedelta(years=int(years_ago))
 
 @app.route("/experiments", methods=["GET"])
 @login_required
@@ -16,24 +18,25 @@ def get_experiments():
 
 @app.route("/experiments/get_average", methods=["POST"])
 @login_required
-def get_avarage_stakes_by_age():
+def get_average_redirect():
     minimum_age = request.form.get("minimum_age")
     minimum_qualifications = request.form.get("minimum_qualifications")
     return redirect(
-        url_for(f"get_jobs_by_salary", minimum_age=minimum_age, minimum_qualifications=minimum_qualifications)
+        url_for(f"get_average", minimum_age=minimum_age, minimum_qualifications=minimum_qualifications)
     )
-
 
 @app.route("/experiments/get_average/<minimum_age>/<minimum_qualifications>", methods=["GET"])
 @login_required
-def get_avarage_stakes_by_age(minimum_age, minimum_qualifications):
-    salary = db.session.query(func.avg(JobOffer.hourly_rate).label('avarage salary'))\
-        .join(Employment).join(JobOffer)\
-        .groupby(Employment)\
+def get_average(minimum_age, minimum_qualifications):
+    salary = db.session.query(func.avg(JobOffer.hourly_rate).label('avg_salary'))\
+        .join(Employment).join(Prisoner).join(Qualification)\
         .filter(Prisoner.birth_date < what_date_was(minimum_age))\
-        .having(func.count_(Prisoner.qualifications) >= minimum_qualifications)\
-        .all()
-    return render_template("experiments.html", salary=salary)
+        .having(func.count_(Prisoner.qualifications) >= int(minimum_qualifications))\
+        .group_by(Prisoner.id)\
+        .subquery()
+    better_salary = db.session.query(func.avg(salary.c.avg_salary)).scalar()
+
+    return render_template("experiments.html", salary=format(better_salary, '.2f'))
 
 @app.route("/experiments/add_employment", methods=["POST"])
 @login_required
@@ -46,11 +49,11 @@ def add_employment():
     prisoner = db.session.query(Prisoner).filter(Prisoner.id == employee_id)
     if prisoner is None:
         app.logger.error(f"No inmate with ID: {employee_id}")
-        abort(404)
-    joboffer = db.session.query(JobOffer).filter(JobOffer.id == joboffer_id)
+        return abort(404)
+    joboffer = db.session.query(JobOffer).filter(JobOffer.job_id == joboffer_id)
     if joboffer is None:
         app.logger.error(f"No joboffer with ID: {joboffer_id}")
-        abort(404)
+        return abort(404)
     db.session.add(Employment(employment_id, joboffer_id, employee_id, start_date, end_date))
     prisoner.update({"hired": True})
     db.session.commit()

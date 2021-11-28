@@ -63,6 +63,11 @@ def init_db():
 
     db.session.add(Qualification(100, "Plumbering", 3))
     db.session.add(Qualification(100, "CNC machinery", 4))
+    db.session.add(Qualification(100, "Driving", 3))
+    db.session.add(Qualification(101, "Speaking", 3))
+    db.session.add(Qualification(101, "Playing games", 3))
+    db.session.add(Qualification(102, "Java", 4))
+
 
     db.session.add(
         Company(200, "ul. Jakaśtam 24, Warszawa", "Tiropolex sp. z o. o.", "Tiropolex")
@@ -73,11 +78,11 @@ def init_db():
         Company(203, "ul. Chłodna 26, Warszawa", "Intel Technology Poland", "Intel")
     )
 
-    db.session.add(JobOffer(300, 200, "Plumber", 15.5, 30))
-    db.session.add(JobOffer(301, 201, "Tech guy", 16.5, 40))
+    db.session.add(JobOffer(300, 200, "Plumber", 15, 30))
+    db.session.add(JobOffer(301, 201, "Tech guy", 16, 40))
     db.session.add(JobOffer(302, 201, "Lecturer", 25, 40))
     db.session.add(JobOffer(303, 202, "Librarian", 7, 10))
-    db.session.add(JobOffer(304, 202, "Chef", 18.5, 15))
+    db.session.add(JobOffer(304, 202, "Chef", 18, 15))
     db.session.add(JobOffer(305, 203, "Programmer", 40, 20))
 
     db.session.add(
