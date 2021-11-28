@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+{% block content %}
+<form action="/experiments/get_average" method="get">
+    <b>Find average salary for prisoner with age and qualifiactions: </b>
+    <input type="number" placeholder="Enter minimum age" name="age" required>
+    <input type="number" placeholder="Enter minimum number of qualifications" name="qualifications" required>
+    <button type="submit">Find</button>
+</form>
+{% if salary is not none %}  
+<h2> Average salary: {{ salary }}</h2>
+{% endif %}
+
+<form action="/experiments/add_employment" method="post">
+    Employment ID : <input type="number" name="employment_id" required>
+    Joboffer ID: <input type="number" name="joboffer_id" required>
+    Employee ID: <input type="number" name="employee_id" required>
+    Start Date: <input type="date" name="start_date" required>
+    End Date: <input type="date"  name="end_date" required>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
