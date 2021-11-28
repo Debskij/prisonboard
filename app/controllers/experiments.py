@@ -5,7 +5,8 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from flask import render_template, url_for, request, abort, redirect
 from flask_login import login_required
-from sqlalchemy.sql.expression import cast
+from time import time
+
 
 def what_date_was(years_ago: int):
     today = date.today()
@@ -14,7 +15,7 @@ def what_date_was(years_ago: int):
 @app.route("/experiments", methods=["GET"])
 @login_required
 def get_experiments():
-    return render_template("experiments.html", salary=None)
+    return render_template("experiments.html", salary=None, time=None)
 
 @app.route("/experiments/get_average", methods=["POST"])
 @login_required
@@ -28,19 +29,21 @@ def get_average_redirect():
 @app.route("/experiments/get_average/<minimum_age>/<minimum_qualifications>", methods=["GET"])
 @login_required
 def get_average(minimum_age, minimum_qualifications):
+    t0 = time()
     salary = db.session.query(func.avg(JobOffer.hourly_rate).label('avg_salary'))\
-        .join(Employment).join(Prisoner).join(Qualification)\
-        .filter(Prisoner.birth_date < what_date_was(minimum_age))\
-        .having(func.count_(Prisoner.qualifications) >= int(minimum_qualifications))\
-        .group_by(Prisoner.id)\
-        .subquery()
+            .join(Employment).join(Prisoner).join(Qualification)\
+            .filter(Prisoner.birth_date < what_date_was(minimum_age))\
+            .having(func.count_(Prisoner.qualifications) >= int(minimum_qualifications))\
+            .group_by(Prisoner.id)\
+            .subquery()
     better_salary = db.session.query(func.avg(salary.c.avg_salary)).scalar()
-
-    return render_template("experiments.html", salary=format(better_salary, '.2f'))
+    end = time() - t0
+    return render_template("experiments.html", salary=format(better_salary, '.2f'), time=end)
 
 @app.route("/experiments/add_employment", methods=["POST"])
 @login_required
 def add_employment():
+    t0 = time()
     employment_id = request.form.get("employment_id")
     joboffer_id = request.form.get("joboffer_id")
     employee_id = request.form.get("prisoner_id")
@@ -57,4 +60,5 @@ def add_employment():
     db.session.add(Employment(employment_id, joboffer_id, employee_id, start_date, end_date))
     prisoner.update({"hired": True})
     db.session.commit()
-    return redirect(url_for("get_experiments"))
+    end = time() - t0
+    return render_template("experiments.html", salary=None, time=end)

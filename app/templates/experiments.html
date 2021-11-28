@@ -9,6 +9,9 @@
 {% if salary is not none %}  
 <h2> Average salary: {{ salary }}</h2>
 {% endif %}
+{% if time is not none %}  
+<h2> Time: {{ time }}</h2>
+{% endif %}
 
 <form action="/experiments/add_employment" method="post">
     <b>Add new employment</b>
