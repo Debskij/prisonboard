@@ -10,16 +10,17 @@
 <h2> Average salary: {{ salary }}</h2>
 {% endif %}
 {% if time is not none %}  
-<h2> Time: {{ time }}</h2>
+<h2> Time: {{ time }} s</h2>
 {% endif %}
 
-<form action="/experiments/add_employment" method="post">
+<form action="/experiments/orm/add_employment" method="post">
     <b>Add new employment</b>
     Employment ID : <input type="number" name="employment_id" required>
     Joboffer ID: <input type="number" name="joboffer_id" required>
     Employee ID: <input type="number" name="prisoner_id" required>
     Start Date: <input type="date" name="start_date" required>
     End Date: <input type="date"  name="end_date" required>
-    <button type="submit">Submit</button>
+    <button type="submit">ORM</button>
+    <button type="submit" formaction="/experiments/native/add_employment">Native SQL</button>
 </form>
 {% endblock %}

@@ -10,7 +10,7 @@ class Prisoner(Person):
     pesel = db.Column(db.String(128), nullable=False, unique=True)
     avarage_ranking = db.Column(db.Float)
     hired = db.Column(db.Boolean, nullable=False)
-    birth_date = db.Column(db.DateTime, nullable=False)
+    birth_date = db.Column(db.Date, nullable=False)
 
     qualifications = relationship(
         "Qualification", back_populates="assigned_prisoner", lazy="joined"
