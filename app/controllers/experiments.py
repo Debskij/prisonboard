@@ -62,14 +62,15 @@ def get_average(minimum_age, minimum_qualifications):
             JOIN employment e ON e.job_offer_id = j.job_id
             JOIN prisoner p ON p.id = e.employee_id
             JOIN qualifications q ON q.prisoners_id = p.id
-            HAVING COUNT(q) >= {int(minimum_qualifications)};
+            WHERE p.birth_date < '{what_date_was(minimum_age)}'
+            HAVING COUNT(q) >= {int(minimum_qualifications)}
         """)
         time_result = time() - t0
         time_sum += time_result
 
     time_avg_native = time_sum / tests_no
     
-    return render_template("experiments.html", salary=format(better_salary, '.2f'), time=format(time_avg_orm, '.6f'))
+    return render_template("experiments.html", salary=format(better_salary, '.2f'), time_orm=format(time_avg_orm, '.6f'), time_native=format(time_avg_native, '.6f'))
 
 @app.route("/experiments/orm/add_employment", methods=["POST"])
 @login_required
@@ -93,7 +94,7 @@ def add_employment():
     prisoner.update({"hired": True})
     db.session.commit()
     time_result = time() - t0
-    return render_template("experiments.html", salary=None, time=time_result)
+    return render_template("experiments.html", salary=None, time_add_orm=time_result)
 
 @app.route("/experiments/native/add_employment", methods=["POST"])
 @login_required
@@ -125,4 +126,4 @@ def add_employment_native():
     """)
     connection.commit()
     time_result = time() - t0
-    return render_template("experiments.html", salary=None, time=time_result)
+    return render_template("experiments.html", salary=None, time_add_native=time_result)

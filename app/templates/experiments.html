@@ -9,8 +9,11 @@
 {% if salary is not none %}  
 <h2> Average salary: {{ salary }}</h2>
 {% endif %}
-{% if time is not none %}  
-<h2> Time: {{ time }} s</h2>
+{% if time_orm is not none %}  
+<h2> Time ORM: {{ time_orm }} s</h2>
+{% endif %}
+{% if time_native is not none %}  
+<h2> Time native SQL: {{ time_native }} s</h2>
 {% endif %}
 
 <form action="/experiments/orm/add_employment" method="post">
@@ -23,4 +26,12 @@
     <button type="submit">ORM</button>
     <button type="submit" formaction="/experiments/native/add_employment">Native SQL</button>
 </form>
+
+{% if time_add_orm is not none %}  
+<h2> Add time ORM: {{ time_add_orm }} s</h2>
+{% endif %}
+{% if time_add_native is not none %}  
+<h2> Add time native SQL: {{ time_add_native }} s</h2>
+{% endif %}
+
 {% endblock %}
